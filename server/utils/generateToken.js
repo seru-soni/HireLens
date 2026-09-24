@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 /**
  * Generates a signed JWT with minimal required payload (userId and role),
- * and sets an HttpOnly cookie on the response.
+ * and sets a cross-site production-compatible HttpOnly cookie on the response.
  */
 const generateTokenAndSetCookie = (res, user) => {
   const token = jwt.sign(
@@ -16,10 +16,14 @@ const generateTokenAndSetCookie = (res, user) => {
     }
   );
 
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  // In cross-site production deployments (e.g. Vercel frontend + Render backend),
+  // cookies MUST use sameSite: 'none' and secure: true to be accepted across domains.
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     path: '/',
   };

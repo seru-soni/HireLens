@@ -140,11 +140,13 @@ const login = async (req, res, next) => {
 // @route   POST /api/auth/logout
 // @access  Public
 const logout = async (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   res.cookie('token', '', {
     httpOnly: true,
     expires: new Date(0),
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
     path: '/',
   });
 
