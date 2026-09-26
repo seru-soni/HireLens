@@ -1,0 +1,130 @@
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.875rem;
+  padding: 0.5rem 0;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+}
+
+.carousel-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  border-radius: 0.875rem;
+  background: #111321;
+  border: 1px solid rgba(184, 161, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carousel-item:hover {
+  background: #171A2E;
+  border-color: rgba(184, 161, 255, 0.32);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(184, 161, 255, 0.14);
+}
+
+.carousel-item:active {
+  cursor: grabbing;
+}
+
+.carousel-item-round {
+  border-radius: 9999px;
+}
+
+/* Card Header */
+.carousel-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.carousel-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.625rem;
+  background-color: #171A2E;
+  border: 1px solid rgba(184, 161, 255, 0.16);
+  flex-shrink: 0;
+}
+
+.carousel-card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #CBD5E1;
+  letter-spacing: -0.01em;
+}
+
+/* Card Body / Value */
+.carousel-card-body {
+  margin: 0.4rem 0;
+}
+
+.carousel-stat-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Card Footer / Description */
+.carousel-card-footer {
+  margin-top: 0.4rem;
+}
+
+.carousel-stat-description {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  line-height: 1.35;
+}
+
+/* Indicators */
+.carousel-indicators-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.carousel-indicator-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.carousel-indicator-dot:focus-visible {
+  outline: 2px solid #B8A1FF;
+}
+
+.carousel-indicator-active {
+  width: 1.25rem;
+  background-color: #B8A1FF;
+}
+
+.carousel-indicator-inactive {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.carousel-indicator-inactive:hover {
+  background-color: rgba(255, 255, 255, 0.30);
+}

@@ -1,5 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
+
+// Load environment variables immediately before requiring dependent modules
+dotenv.config();
+
 const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
@@ -9,9 +13,8 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
-
-// Load environment variables
-dotenv.config();
+const geminiRoutes = require('./routes/geminiRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 
 // Connect to MongoDB Atlas
 connectDB();
@@ -78,6 +81,8 @@ app.get('/api/health', (req, res) => {
 // Mount Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/gemini', geminiRoutes);
+app.use('/api/jobs', jobRoutes);
 
 // Error Handling Middlewares
 app.use(notFound);

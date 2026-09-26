@@ -9,13 +9,11 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
 import { Profile } from './pages/Profile';
-import {
-  AnalyzeJobPage,
-  MyJobsPage,
-  ReportsPage,
-  SavedJobsPage,
-  SettingsPage,
-} from './pages/PlaceholderPages';
+import { AnalyzeJob } from './pages/AnalyzeJob';
+import { Reports } from './pages/MyJobs';
+import { JobReport } from './pages/JobReport';
+import { SavedJobs } from './pages/SavedJobs';
+import { SettingsPage } from './pages/PlaceholderPages';
 import { NotFound } from './pages/NotFound';
 
 export function App() {
@@ -48,10 +46,12 @@ export function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/analyze" element={<AnalyzeJobPage />} />
-            <Route path="/jobs" element={<MyJobsPage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/saved" element={<SavedJobsPage />} />
+            <Route path="/analyze" element={<AnalyzeJob />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/jobs" element={<Navigate to="/reports" replace />} />
+            <Route path="/jobs/:id" element={<JobReport />} />
+            <Route path="/saved" element={<SavedJobs />} />
+            <Route path="/saved-jobs" element={<Navigate to="/saved" replace />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
 

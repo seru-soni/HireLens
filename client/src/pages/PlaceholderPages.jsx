@@ -1,100 +1,74 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
-  Clock,
-  Sparkles,
+  Settings,
+  Shield,
+  Bell,
+  Sliders,
   ArrowRight,
-  ShieldCheck,
-  SearchCode,
-  FileWarning,
-  Bookmark,
-  Settings as SettingsIcon,
-  Briefcase,
+  Sparkles,
 } from 'lucide-react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 
-export const PlaceholderPage = ({ title, description, icon: Icon = Sparkles }) => {
+export const SettingsPage = () => {
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto py-12 px-4 text-center">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-6">
-          <Clock className="w-3.5 h-3.5" />
-          <span>Roadmap Integration • Coming Soon</span>
+      <div className="max-w-3xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="pb-3 border-b border-white/[0.08]">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#F2EFE8] tracking-tight">
+            Account Settings
+          </h1>
+          <p className="text-xs sm:text-sm text-[#85858A] mt-1">
+            Configure application preferences, security, and analysis settings.
+          </p>
         </div>
 
-        <div className="w-16 h-16 rounded-2xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto mb-6">
-          <Icon className="w-8 h-8" />
+        {/* Minimal Settings Cards */}
+        <div className="space-y-4">
+          {/* Analysis Settings */}
+          <div className="p-5 sm:p-6 rounded-2xl bg-[rgba(15,17,23,0.72)] backdrop-blur-md border border-white/[0.08] space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#A8C7E8]">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-[#F2EFE8]">Analysis Engine</h3>
+                <p className="text-xs text-[#85858A]">Powered by Google Gemini for recruitment opportunity risk evaluation.</p>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs">
+              <span className="text-[#B8B6B0]">Detailed evidence breakdown</span>
+              <span className="px-2.5 py-1 rounded-lg bg-[rgba(104,168,131,0.12)] text-[#68a883] font-semibold text-[10px] border border-[rgba(104,168,131,0.25)]">
+                Active
+              </span>
+            </div>
+          </div>
+
+          {/* Security & Sessions */}
+          <div className="p-5 sm:p-6 rounded-2xl bg-[rgba(15,17,23,0.72)] backdrop-blur-md border border-white/[0.08] space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#A8C7E8]">
+                <Shield className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-[#F2EFE8]">Security & Authentication</h3>
+                <p className="text-xs text-[#85858A]">JWT secure cookie token session protection.</p>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs">
+              <span className="text-[#B8B6B0]">HttpOnly cookie storage</span>
+              <span className="px-2.5 py-1 rounded-lg bg-[rgba(104,168,131,0.12)] text-[#68a883] font-semibold text-[10px] border border-[rgba(104,168,131,0.25)]">
+                Enforced
+              </span>
+            </div>
+          </div>
         </div>
-
-        <h1 className="text-3xl font-bold text-white mb-3">{title}</h1>
-        <p className="text-slate-400 text-base max-w-xl mx-auto mb-8 leading-relaxed">
-          {description}
-        </p>
-
-        <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-left max-w-md mx-auto mb-8 space-y-3">
-          <h4 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Planned Architecture:</h4>
-          <div className="flex items-center space-x-2 text-xs text-slate-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-            <span>RESTful analysis hooks for rule and ML engine</span>
-          </div>
-          <div className="flex items-center space-x-2 text-xs text-slate-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-            <span>Persistent history stored in MongoDB Atlas</span>
-          </div>
-          <div className="flex items-center space-x-2 text-xs text-slate-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-            <span>Community validation and recruiter domain matching</span>
-          </div>
-        </div>
-
-        <Link
-          to="/dashboard"
-          className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 transition-colors"
-        >
-          <span>Back to Dashboard</span>
-          <ArrowRight className="w-4 h-4" />
-        </Link>
       </div>
     </DashboardLayout>
   );
 };
 
-export const AnalyzeJobPage = () => (
-  <PlaceholderPage
-    title="Job Risk Analysis Engine"
-    description="The automated rule-based and NLP risk engine will parse recruiter domains, compensation flags, and application URLs here."
-    icon={SearchCode}
-  />
-);
-
-export const MyJobsPage = () => (
-  <PlaceholderPage
-    title="My Analyzed Jobs"
-    description="Track all previous job analysis reports, risk score evolutions, and exportable findings."
-    icon={Briefcase}
-  />
-);
-
-export const ReportsPage = () => (
-  <PlaceholderPage
-    title="Recruitment Risk Reports"
-    description="Submit and browse verified evidence regarding impersonated companies and fraudulent recruiters."
-    icon={FileWarning}
-  />
-);
-
-export const SavedJobsPage = () => (
-  <PlaceholderPage
-    title="Saved Opportunities"
-    description="Bookmark vetted job opportunities and monitor future risk signal updates."
-    icon={Bookmark}
-  />
-);
-
-export const SettingsPage = () => (
-  <PlaceholderPage
-    title="Platform Settings"
-    description="Configure notification preferences, scan sensitivity, and security options."
-    icon={SettingsIcon}
-  />
-);
+export default SettingsPage;

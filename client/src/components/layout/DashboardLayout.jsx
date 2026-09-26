@@ -1,38 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   ShieldCheck,
   LayoutDashboard,
   SearchCode,
-  Briefcase,
   FileWarning,
   Bookmark,
-  User,
   Settings,
   LogOut,
-  Menu,
-  X,
   Shield,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { HireLensAmbientFlow } from '../dashboard/HireLensAmbientFlow';
 
 export const DashboardLayout = ({ children }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navigation = [
+  const dockNav = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Analyze Job', href: '/analyze', icon: SearchCode },
-    { name: 'My Jobs', href: '/jobs', icon: Briefcase },
     { name: 'Reports', href: '/reports', icon: FileWarning },
     { name: 'Saved Jobs', href: '/saved', icon: Bookmark },
-  ];
-
-  const accountNav = [
-    { name: 'Profile', href: '/profile', icon: User },
-    { name: 'Settings', href: '/settings', icon: Settings },
   ];
 
   const handleLogout = async () => {
@@ -40,174 +31,122 @@ export const DashboardLayout = ({ children }) => {
     navigate('/login');
   };
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => {
+    if (path === '/reports') {
+      return location.pathname === '/reports' || location.pathname === '/jobs' || location.pathname.startsWith('/jobs/');
+    }
+    return location.pathname === path;
+  };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col md:flex-row text-slate-100">
-      {/* Mobile Top Header */}
-      <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
-        <Link to="/dashboard" className="flex items-center space-x-2">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-md shadow-indigo-600/30">
-            <ShieldCheck className="w-5 h-5 text-white" />
+    <div className="min-h-screen bg-transparent text-[#94A3B8] flex flex-col relative pb-28 selection:bg-[#B8A7FF]/30 selection:text-[#F8FAFC]">
+      {/* Full-Page Unified Dark Deep Navy-Violet Atmospheric Animated Background */}
+      <HireLensAmbientFlow />
+
+      {/* Top Navbar Header (Clean Solid SaaS Header with subtle border) */}
+      <header className="sticky top-0 z-40 w-full border-b border-[rgba(160,140,255,0.15)] bg-[#0A0D1F] px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-sm">
+        {/* Brand */}
+        <Link to="/dashboard" className="flex items-center space-x-2.5 group">
+          <div className="w-8 h-8 rounded-xl bg-[#111321] border border-[rgba(184,161,255,0.20)] flex items-center justify-center text-[#B8A1FF] group-hover:border-[#B8A1FF] transition-all">
+            <ShieldCheck className="w-5 h-5 text-[#B8A1FF]" />
           </div>
-          <span className="font-bold text-lg text-white">HireLens</span>
+          <span className="font-bold text-lg text-[#F8FAFC] tracking-tight">
+            Hire<span className="text-[#B8A1FF]">Lens</span>
+          </span>
         </Link>
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-          aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+
+        {/* Top-Right Account Controls */}
+        <div className="flex items-center space-x-3">
+          {/* Subtle Role Badge */}
+          <div className="hidden sm:flex items-center space-x-2 text-xs text-[#94A3B8] bg-[#111321] px-3 py-1.5 rounded-full border border-[rgba(184,161,255,0.15)]">
+            <Shield className="w-3.5 h-3.5 text-[#B8A1FF]" />
+            <span>Role: <strong className="text-[#F8FAFC] uppercase">{user?.role || 'User'}</strong></span>
+          </div>
+
+          {/* Account Settings Link */}
+          <Link
+            to="/settings"
+            className={`p-2 rounded-xl border transition-all ${
+              location.pathname === '/settings'
+                ? 'bg-[#171A2E] text-[#B8A1FF] border-[rgba(184,161,255,0.30)]'
+                : 'bg-[#111321] hover:bg-[#171A2E] text-[#94A3B8] hover:text-[#F8FAFC] border-[rgba(184,161,255,0.15)]'
+            }`}
+            title="Settings"
+            aria-label="Settings"
+          >
+            <Settings className="w-4 h-4" />
+          </Link>
+
+          {/* User Profile Avatar Button */}
+          <Link
+            to="/profile"
+            className={`flex items-center space-x-2 px-2.5 py-1.5 rounded-xl border transition-all ${
+              location.pathname === '/profile'
+                ? 'bg-[#171A2E] text-[#F8FAFC] border-[rgba(184,161,255,0.30)]'
+                : 'bg-[#111321] hover:bg-[#171A2E] text-[#94A3B8] hover:text-[#F8FAFC] border-[rgba(184,161,255,0.15)]'
+            }`}
+            title={user?.email || 'Profile'}
+          >
+            <div className="w-6 h-6 rounded-lg bg-[#171A2E] border border-[rgba(184,161,255,0.25)] flex items-center justify-center font-bold text-[#B8A1FF] text-xs shrink-0">
+              {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+            </div>
+            <span className="text-xs font-medium text-[#F8FAFC] hidden md:inline truncate max-w-[120px]">
+              {user?.name?.split(' ')[0] || 'Profile'}
+            </span>
+          </Link>
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-xl text-[#94A3B8] hover:text-[#FB7185] bg-[#111321] hover:bg-[#171A2E] border border-[rgba(184,161,255,0.15)] hover:border-[rgba(244,63,94,0.30)] transition-all cursor-pointer"
+            title="Logout"
+            aria-label="Logout"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
       </header>
 
-      {/* Desktop Sidebar & Mobile Drawer */}
-      <aside
-        className={`fixed md:sticky top-0 left-0 z-40 h-screen w-64 border-r border-slate-800 bg-slate-900/95 md:bg-slate-900/70 backdrop-blur-md flex flex-col justify-between transition-transform duration-300 ease-in-out md:translate-x-0 ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}
-      >
-        <div className="p-5 flex flex-col flex-1 overflow-y-auto">
-          {/* Brand */}
-          <div className="hidden md:flex items-center space-x-3 mb-8 px-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-600/30">
-              <ShieldCheck className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <span className="text-xl font-bold tracking-tight text-white flex items-center">
-                Hire<span className="text-indigo-400">Lens</span>
-              </span>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-indigo-400/80 block">
-                Risk Assessment
-              </span>
-            </div>
-          </div>
-
-          {/* Main Navigation */}
-          <div className="space-y-1">
-            <p className="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-              Menu
-            </p>
-            {navigation.map((item) => {
-              const active = isActive(item.href);
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
-                    active
-                      ? 'bg-indigo-600/15 text-indigo-400 border border-indigo-500/30 font-semibold'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 ${active ? 'text-indigo-400' : 'text-slate-400'}`} />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Account Section */}
-          <div className="mt-8 space-y-1">
-            <p className="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-              Account
-            </p>
-            {accountNav.map((item) => {
-              const active = isActive(item.href);
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
-                    active
-                      ? 'bg-indigo-600/15 text-indigo-400 border border-indigo-500/30 font-semibold'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 ${active ? 'text-indigo-400' : 'text-slate-400'}`} />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Risk Engine Badge */}
-          <div className="mt-auto pt-6">
-            <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800/80">
-              <div className="flex items-center space-x-2 text-xs font-semibold text-emerald-400 mb-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                <span>Rule Engine v1.0</span>
-              </div>
-              <p className="text-[11px] text-slate-400 leading-tight">
-                Continuous risk indicators & recruiter signal validation active.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* User Footer & Logout */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/40">
-          <div className="flex items-center justify-between">
-            <Link
-              to="/profile"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center space-x-3 min-w-0 hover:opacity-80 transition-opacity"
-            >
-              <div className="w-9 h-9 rounded-full bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center font-bold text-indigo-300 text-sm shrink-0">
-                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-medium text-white truncate">{user?.name || 'User'}</p>
-                <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
-              </div>
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
-              title="Logout"
-              aria-label="Logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </aside>
-
-      {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
-        {/* Top Navbar on Desktop */}
-        <div className="hidden md:flex items-center justify-between px-8 py-4 border-b border-slate-800 bg-slate-900/30 backdrop-blur-sm sticky top-0 z-30">
-          <div className="flex items-center space-x-2 text-xs text-slate-400">
-            <span>HireLens</span>
-            <span>/</span>
-            <span className="text-slate-200 capitalize">
-              {location.pathname.replace('/', '') || 'Dashboard'}
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-xs text-slate-400 bg-slate-800/60 px-3 py-1.5 rounded-full border border-slate-700/60">
-              <Shield className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Role: <strong className="text-slate-200 uppercase">{user?.role || 'User'}</strong></span>
-            </div>
-            <Link
-              to="/profile"
-              className="text-xs font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors"
-            >
-              Account Settings
-            </Link>
-          </div>
-        </div>
-
-        {/* Page Content */}
-        <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-          {children}
-        </div>
+      {/* Main Workspace Content */}
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 relative z-10">
+        {children}
       </main>
+
+      {/* Bottom Mac-Style Dock Navigation - Solid SaaS Surface */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto">
+        <nav
+          aria-label="Application Dock Navigation"
+          className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-2xl bg-[#111321] border border-[rgba(184,161,255,0.18)] shadow-2xl shadow-black/80 transition-all hover:border-[rgba(184,161,255,0.30)]"
+        >
+          {dockNav.map((item) => {
+            const active = isActive(item.href);
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`relative flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-medium transition-all duration-200 group cursor-pointer ${
+                  active
+                    ? 'bg-[#171A2E] text-[#F8FAFC] border border-[rgba(184,161,255,0.30)]'
+                    : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#171A2E]'
+                }`}
+              >
+                <Icon
+                  className={`w-4 h-4 transition-colors ${
+                    active ? 'text-[#B8A1FF]' : 'text-[#94A3B8] group-hover:text-[#B8A1FF]'
+                  }`}
+                />
+                <span className="text-[11px] sm:text-xs tracking-tight">{item.name}</span>
+                {active && (
+                  <span className="hidden sm:block absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#B8A1FF]" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
     </div>
   );
 };
+
+export default DashboardLayout;

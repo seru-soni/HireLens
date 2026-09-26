@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck, Eye, EyeOff, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { AuthLayout } from '../components/auth/AuthLayout';
 
 export const Register = () => {
   const [formData, setFormData] = useState({
@@ -50,7 +51,6 @@ export const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear specific field error as user types
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
     }
@@ -82,178 +82,186 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      {/* Brand Header */}
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link to="/" className="inline-flex items-center space-x-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-transform duration-200">
-            <ShieldCheck className="w-6 h-6 text-white" />
+    <AuthLayout
+      heroSubtitle="Identify potential risks in job postings and make more informed application decisions."
+      features={[
+        'Job posting analysis',
+        'Risk indicators',
+        'Personal reports',
+      ]}
+    >
+      <div className="auth-card">
+        {/* Compact Card Header */}
+        <div className="auth-card-header">
+          <h2 className="auth-card-title">Create your account</h2>
+          <p className="auth-card-subtitle">
+            Create an account to start assessing job opportunities.
+          </p>
+        </div>
+
+        {/* Server Error Alert */}
+        {serverError && (
+          <div className="auth-error-alert" role="alert">
+            <AlertCircle className="w-4 h-4 text-[#c46b6b] shrink-0 mt-0.5" />
+            <span>{serverError}</span>
           </div>
-          <span className="text-2xl font-bold tracking-tight text-white flex items-center">
-            Hire<span className="text-indigo-400">Lens</span>
-          </span>
-        </Link>
-        <h2 className="mt-6 text-2xl font-bold tracking-tight text-white">
-          Create your HireLens account
-        </h2>
-        <p className="mt-2 text-sm text-slate-400">
-          Already have an account?{' '}
-          <Link to="/login" className="font-medium text-indigo-400 hover:text-indigo-300">
-            Sign in
-          </Link>
-        </p>
-      </div>
+        )}
 
-      {/* Form Card */}
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <div className="bg-slate-900/90 border border-slate-800 py-8 px-6 sm:px-10 shadow-xl rounded-2xl">
-          {serverError && (
-            <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 flex items-start space-x-3 text-sm">
-              <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-              <span>{serverError}</span>
+        {/* Registration Form */}
+        <form onSubmit={handleSubmit} noValidate>
+          {/* Full Name */}
+          <div className="auth-form-group">
+            <label htmlFor="name" className="auth-label">
+              Full Name
+            </label>
+            <div
+              className={`auth-input-wrapper ${
+                errors.name ? 'auth-input-wrapper-error' : ''
+              }`}
+            >
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Jane Doe"
+                className="auth-input"
+              />
             </div>
-          )}
+            {errors.name && (
+              <p className="auth-field-error">{errors.name}</p>
+            )}
+          </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit} noValidate>
-            {/* Full Name */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-slate-200">
-                Full Name
-              </label>
-              <div className="mt-1.5">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Jane Doe"
-                  className={`block w-full rounded-xl bg-slate-950 border px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-colors ${
-                    errors.name ? 'border-rose-500/80 focus:border-rose-500' : 'border-slate-800 focus:border-indigo-500'
-                  }`}
-                />
-                {errors.name && (
-                  <p className="mt-1.5 text-xs text-rose-400">{errors.name}</p>
-                )}
-              </div>
+          {/* Email Address */}
+          <div className="auth-form-group">
+            <label htmlFor="email" className="auth-label">
+              Email Address
+            </label>
+            <div
+              className={`auth-input-wrapper ${
+                errors.email ? 'auth-input-wrapper-error' : ''
+              }`}
+            >
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="name@example.com"
+                className="auth-input"
+              />
             </div>
+            {errors.email && (
+              <p className="auth-field-error">{errors.email}</p>
+            )}
+          </div>
 
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-200">
-                Email Address
-              </label>
-              <div className="mt-1.5">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="jane@example.com"
-                  className={`block w-full rounded-xl bg-slate-950 border px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-colors ${
-                    errors.email ? 'border-rose-500/80 focus:border-rose-500' : 'border-slate-800 focus:border-indigo-500'
-                  }`}
-                />
-                {errors.email && (
-                  <p className="mt-1.5 text-xs text-rose-400">{errors.email}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-200">
-                Password
-              </label>
-              <div className="mt-1.5 relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Minimum 8 characters"
-                  className={`block w-full rounded-xl bg-slate-950 border px-3.5 py-2.5 pr-10 text-sm text-white placeholder:text-slate-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-colors ${
-                    errors.password ? 'border-rose-500/80 focus:border-rose-500' : 'border-slate-800 focus:border-indigo-500'
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="mt-1.5 text-xs text-rose-400">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-200">
-                Confirm Password
-              </label>
-              <div className="mt-1.5 relative">
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Re-enter your password"
-                  className={`block w-full rounded-xl bg-slate-950 border px-3.5 py-2.5 pr-10 text-sm text-white placeholder:text-slate-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-colors ${
-                    errors.confirmPassword ? 'border-rose-500/80 focus:border-rose-500' : 'border-slate-800 focus:border-indigo-500'
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200"
-                  aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
-                >
-                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="mt-1.5 text-xs text-rose-400">{errors.confirmPassword}</p>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <div className="pt-2">
+          {/* Password */}
+          <div className="auth-form-group">
+            <label htmlFor="password" className="auth-label">
+              Password
+            </label>
+            <div
+              className={`auth-input-wrapper ${
+                errors.password ? 'auth-input-wrapper-error' : ''
+              }`}
+            >
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="new-password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Minimum 8 characters"
+                className="auth-input"
+              />
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full flex items-center justify-center space-x-2 py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-indigo-600/30 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="auth-password-toggle"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Creating Account...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Create Account</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
-          </form>
+            {errors.password && (
+              <p className="auth-field-error">{errors.password}</p>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="auth-form-group">
+            <label htmlFor="confirmPassword" className="auth-label">
+              Confirm Password
+            </label>
+            <div
+              className={`auth-input-wrapper ${
+                errors.confirmPassword ? 'auth-input-wrapper-error' : ''
+              }`}
+            >
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                autoComplete="new-password"
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Re-enter your password"
+                className="auth-input"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="auth-password-toggle"
+                aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="auth-field-error">{errors.confirmPassword}</p>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="auth-primary-btn"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Creating account...</span>
+                </>
+              ) : (
+                <span>Create Account</span>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Footer Navigation */}
+        <div className="auth-footer-nav">
+          <span>Already have an account?</span>
+          <Link to="/login" className="auth-link">
+            Sign in
+          </Link>
         </div>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
+
+export default Register;
