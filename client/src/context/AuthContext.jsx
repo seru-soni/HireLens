@@ -36,6 +36,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await API.post('/auth/register', userData);
       if (res.data?.success && res.data?.user) {
+        if (res.data?.token) {
+          localStorage.setItem('hirelens_token', res.data.token);
+        }
         setUser(res.data.user);
         return { success: true, user: res.data.user };
       }
@@ -53,6 +56,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await API.post('/auth/login', credentials);
       if (res.data?.success && res.data?.user) {
+        if (res.data?.token) {
+          localStorage.setItem('hirelens_token', res.data.token);
+        }
         setUser(res.data.user);
         return { success: true, user: res.data.user };
       }
@@ -71,6 +77,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.error('Logout request error:', err);
     } finally {
+      localStorage.removeItem('hirelens_token');
       setUser(null);
     }
   };

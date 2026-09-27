@@ -4,9 +4,14 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   let token;
 
-  // Retrieve token from HttpOnly cookie
+  // 1. Retrieve token from HttpOnly cookie first
   if (req.cookies && req.cookies.token) {
     token = req.cookies.token;
+  }
+
+  // 2. If no cookie token, check Authorization header: Bearer <token>
+  if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    token = req.headers.authorization.split(' ')[1];
   }
 
   if (!token) {

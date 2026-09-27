@@ -60,8 +60,8 @@ const register = async (req, res, next) => {
       role: 'user',
     });
 
-    // Set cookie and respond
-    generateTokenAndSetCookie(res, user);
+    // Set cookie and get token
+    const token = generateTokenAndSetCookie(res, user);
 
     if (process.env.NODE_ENV !== 'production') {
       console.log(`[Auth Register] User successfully created in MongoDB Atlas. ID: ${user._id}`);
@@ -70,6 +70,7 @@ const register = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: 'Account created successfully.',
+      token,
       user: {
         _id: user._id,
         name: user.name,
@@ -116,12 +117,13 @@ const login = async (req, res, next) => {
       });
     }
 
-    // Set cookie and respond
-    generateTokenAndSetCookie(res, user);
+    // Set cookie and get token
+    const token = generateTokenAndSetCookie(res, user);
 
     res.status(200).json({
       success: true,
       message: 'Logged in successfully.',
+      token,
       user: {
         _id: user._id,
         name: user.name,
